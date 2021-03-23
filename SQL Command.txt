@@ -1,0 +1,3 @@
+USE master ;
+GO
+ALTER DATABASE ChuyenDeCNPM SET ENABLE_BROKER with rollback immediate

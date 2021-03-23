@@ -1,0 +1,13 @@
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.csprojAssemblyReference.cache
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.Form1.resources
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.csproj.GenerateResource.cache
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.AssemblyInfoInputs.cache
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.AssemblyInfo.cs
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.csproj.CoreCompileInputs.cache
+D:\Project\ChuyendeCNPM\Project\Project\bin\Debug\net4.8\Project.exe.config
+D:\Project\ChuyendeCNPM\Project\Project\bin\Debug\net4.8\Project.exe
+D:\Project\ChuyendeCNPM\Project\Project\bin\Debug\net4.8\Project.pdb
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.exe
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.pdb
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.Update.resources
+D:\Project\ChuyendeCNPM\Project\Project\obj\Debug\net4.8\Project.Form2.resources
