@@ -1,3 +1,42 @@
+KÍCH HOẠT SQL BROKE
+
 USE master ;
 GO
 ALTER DATABASE ChuyenDeCNPM SET ENABLE_BROKER with rollback immediate
+
+ =================================================================
+
+THAY ĐỔI DỮ LIỆU TRONG DATABASE
+
+CREATE PROCEDURE [dbo].[SP_UPDATE_TABLE] 
+@manv int,@ho NVARCHAR(50), @ten NVARCHAR(10), @phai NVARCHAR(3), @diachi NVARCHAR(100), @ngaysinh date, @luong float, @type int
+AS
+SET XACT_ABORT ON;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+SET NOCOUNT ON;
+BEGIN
+	
+	BEGIN TRAN
+		BEGIN TRY
+		MERGE NhanVien AS NV
+		USING (VALUES (@manv,@ho,@ten,@phai,@diachi,@ngaysinh,@luong)) AS temp(manv,ho,ten,phai,diachi,ngaysinh,luong)
+		 ON NV.manv = @manv
+		WHEN MATCHED AND (@type > 0) THEN
+				UPDATE SET NV.ho = temp.ho, NV.ten = temp.ten, NV.phai = temp.phai, NV.diachi = temp.diachi, 
+					NV.ngaysinh = temp.ngaysinh, NV.luong = temp.luong
+		WHEN MATCHED AND (@type = 0) THEN DELETE
+		WHEN NOT MATCHED THEN 
+			INSERT VALUES (temp.ho,temp.ten,temp.phai,temp.diachi,temp.ngaysinh,temp.luong);
+		WAITFOR DELAY '00:00:10' 
+		COMMIT
+		END TRY
+		BEGIN CATCH
+			IF (@@TRANCOUNT > 0)
+			BEGIN
+				ROLLBACK TRAN;
+			END;
+		THROW;
+		END CATCH
+	
+END
+GO
