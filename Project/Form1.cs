@@ -47,7 +47,7 @@ namespace Project
                 return false;
             }
         }
-        private string GetConnectionString()
+        public static string GetConnectionString()
         {
             // To avoid storing the connection string in your code,
             // you can retrive it from a configuration file.

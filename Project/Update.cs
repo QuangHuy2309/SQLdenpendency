@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Project
     public partial class Update : Form
     {
         int position = 0;
+        int type = 1;
         public Update()
         {
             InitializeComponent();
@@ -38,7 +40,7 @@ namespace Project
         {
             position = nhanVienBindingSource.Position;
             this.nhanVienBindingSource.AddNew();
-            txt_manv.Enabled = false;
+            //txt_manv.Enabled = false;
         }
 
         private void button_Xoa_Click(object sender, EventArgs e)
@@ -48,20 +50,40 @@ namespace Project
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.OK)
             {
-                try
-                {
+                
                     maNV = int.Parse(((DataRowView)nhanVienBindingSource[nhanVienBindingSource.Position])["manv"].ToString());
-                    nhanVienBindingSource.RemoveCurrent();
-                    this.nhanVienTableAdapter.Update(this.chuyenDeCNPMDataSet.NhanVien);
-                }
-                catch (Exception ex)
-                {
+                    type = 0;
+                    SqlConnection connect = new SqlConnection(Form1.GetConnectionString());
+                    if (connect.State == ConnectionState.Closed)
+                    {
+                        connect.Open();
+                    }
+                    SqlCommand cmd = new SqlCommand("SP_UPDATE_TABLE", connect);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@manv", maNV));
+                    cmd.Parameters.Add(new SqlParameter("@ho", ""));
+                    cmd.Parameters.Add(new SqlParameter("@ten", ""));
+                    cmd.Parameters.Add(new SqlParameter("@phai", ""));
+                    cmd.Parameters.Add(new SqlParameter("@diachi", ""));
+                    cmd.Parameters.Add(new SqlParameter("@ngaysinh", ""));
+                    cmd.Parameters.Add(new SqlParameter("@luong", ""));
+                    cmd.Parameters.Add(new SqlParameter("@type", type));
+                    SqlDataReader myReader = null;
+                    try
+                    {
+                        myReader = cmd.ExecuteReader();
+                        MessageBox.Show("Xóa thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (SqlException ex)
+                    {
                     MessageBox.Show("Lỗi xảy ra trong quá trình xóa. Vui lòng thử lại!\n" + ex.Message, "Thông báo lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.nhanVienTableAdapter.Fill(this.chuyenDeCNPMDataSet.NhanVien);
                     nhanVienBindingSource.Position = nhanVienBindingSource.Find("manv", maNV);
                     return;
-                }
+                    }
+                    this.nhanVienTableAdapter.Fill(this.chuyenDeCNPMDataSet.NhanVien);
+                
             }
         }
 
@@ -75,9 +97,43 @@ namespace Project
                 {
                     try
                     {
-                        this.nhanVienBindingSource.EndEdit();
-                        this.nhanVienTableAdapter.Update(this.chuyenDeCNPMDataSet.NhanVien);
-                        MessageBox.Show("Ghi thành công", "Thông báo", MessageBoxButtons.OK);
+                        string manv = txt_manv.Text.Trim();
+                        string ho = txt_ho.Text.Trim();
+                        string ten = txt_ten.Text.Trim();
+                        string phai = txt_phai.Text.Trim();
+                        string diachi = txt_diachi.Text.Trim();
+                        string ngaysinh = dte_ngaysinh.Value.ToString("yyyy-MM-dd");
+                        float luong = float.Parse(txt_luong.Text.Trim());
+                        type = 1;
+
+                        SqlConnection connect = new SqlConnection(Form1.GetConnectionString());
+                        if (connect.State == ConnectionState.Closed)
+                        {
+                            connect.Open();
+                        }
+                        SqlCommand cmd = new SqlCommand("SP_UPDATE_TABLE", connect);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("@manv", manv));
+                        cmd.Parameters.Add(new SqlParameter("@ho", ho));
+                        cmd.Parameters.Add(new SqlParameter("@ten", ten));
+                        cmd.Parameters.Add(new SqlParameter("@phai", phai));
+                        cmd.Parameters.Add(new SqlParameter("@diachi", diachi));
+                        cmd.Parameters.Add(new SqlParameter("@ngaysinh", ngaysinh));
+                        cmd.Parameters.Add(new SqlParameter("@luong", luong));
+                        cmd.Parameters.Add(new SqlParameter("@type", type));
+                        SqlDataReader myReader = null;
+                        try
+                        {
+                            myReader = cmd.ExecuteReader();
+                            MessageBox.Show("Ghi dữ liệu thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (SqlException ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                        /*this.nhanVienBindingSource.EndEdit();*/
+                        this.nhanVienTableAdapter.Fill(this.chuyenDeCNPMDataSet.NhanVien);
+                        //MessageBox.Show("Ghi thành công", "Thông báo", MessageBoxButtons.OK);
                     }
                     catch (Exception ex)
                     {
@@ -158,17 +214,19 @@ namespace Project
 
         private void txt_luong_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
-        (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
+            
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                    (e.KeyChar != '.'))
+                {
+                    e.Handled = true;
+                }
 
-            // only allow one decimal point
-            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
-            {
-                e.Handled = true;
-            }
+                // only allow one decimal point
+                if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+                {
+                    e.Handled = true;
+                }
+            
         }
 
         private void txt_diachi_Validating(object sender, CancelEventArgs e)
@@ -183,6 +241,21 @@ namespace Project
             {
                 e.Cancel = false;
                 errorProvider1.SetError(txt_diachi, "");
+            }
+        }
+
+        private void txt_luong_Validating(object sender, CancelEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txt_luong.Text))
+            {
+                e.Cancel = true;
+                txt_luong.Focus();
+                errorProvider1.SetError(txt_luong, "Lương không được để trống!");
+            }
+            else
+            {
+                e.Cancel = false;
+                errorProvider1.SetError(txt_luong, "");
             }
         }
     }

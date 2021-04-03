@@ -167,6 +167,7 @@ namespace Project
             this.nhanVienDataGridView.DataSource = this.nhanVienBindingSource;
             this.nhanVienDataGridView.Location = new System.Drawing.Point(-2, 0);
             this.nhanVienDataGridView.Name = "nhanVienDataGridView";
+            this.nhanVienDataGridView.ReadOnly = true;
             this.nhanVienDataGridView.RowHeadersWidth = 51;
             this.nhanVienDataGridView.RowTemplate.Height = 24;
             this.nhanVienDataGridView.Size = new System.Drawing.Size(929, 307);
@@ -271,6 +272,7 @@ namespace Project
             // txt_manv
             // 
             this.txt_manv.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.nhanVienBindingSource, "manv", true));
+            this.txt_manv.Enabled = false;
             this.txt_manv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_manv.Location = new System.Drawing.Point(110, 353);
             this.txt_manv.Name = "txt_manv";
@@ -327,6 +329,7 @@ namespace Project
             this.txt_luong.Size = new System.Drawing.Size(309, 27);
             this.txt_luong.TabIndex = 18;
             this.txt_luong.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_luong_KeyPress);
+            this.txt_luong.Validating += new System.ComponentModel.CancelEventHandler(this.txt_luong_Validating);
             // 
             // dte_ngaysinh
             // 
