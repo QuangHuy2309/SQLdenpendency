@@ -24,6 +24,7 @@ namespace Project
         //' for the lifetime of the application.
         private SqlConnection connection = null;
         private SqlCommand command = null;
+        Update form = new Update();
         //private DataSet dataToWatch = null;
         //private BindingSource SBind = new BindingSource();
         public Form1()
@@ -166,6 +167,7 @@ namespace Project
             //SBind = new BindingSource();
             //SBind.DataSource = dt;
             DataGridView1.DataSource = dt;
+            form.nhanVienTableAdapter.Fill(form.chuyenDeCNPMDataSet.NhanVien);
             //DataGridView1.DataSource = SBind;
             //DataGridView1.Refresh();
         }
@@ -206,7 +208,7 @@ namespace Project
         }
         private void button_update_Click(object sender, EventArgs e)
         {
-            Update form = new Update();
+            
             form.Show();
         }
         private void Form1_FormClosed(System.Object sender, System.Windows.Forms.FormClosedEventArgs e)

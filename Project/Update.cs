@@ -69,9 +69,11 @@ namespace Project
                     cmd.Parameters.Add(new SqlParameter("@luong", ""));
                     cmd.Parameters.Add(new SqlParameter("@type", type));
                     SqlDataReader myReader = null;
+                    panel2.Width = 110;
                     try
                     {
                         myReader = cmd.ExecuteReader();
+                        timer1.Start();
                         MessageBox.Show("Xóa thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (SqlException ex)
@@ -122,9 +124,11 @@ namespace Project
                         cmd.Parameters.Add(new SqlParameter("@luong", luong));
                         cmd.Parameters.Add(new SqlParameter("@type", type));
                         SqlDataReader myReader = null;
+                        panel2.Width = 110;
                         try
                         {
                             myReader = cmd.ExecuteReader();
+                            timer1.Start();
                             MessageBox.Show("Ghi dữ liệu thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         catch (SqlException ex)
@@ -148,14 +152,13 @@ namespace Project
 
         private void txt_ho_Validating(object sender, CancelEventArgs e)
         {
-            var regexItem = new Regex("^[a-zA-Z]*$");
             if (string.IsNullOrWhiteSpace(txt_ho.Text))
             {
                 e.Cancel = true;
                 txt_ho.Focus();
                 errorProvider1.SetError(txt_ho, "Họ không được để trống!");
             }
-            else if (!regexItem.IsMatch(txt_ho.Text.Trim()))
+            else if (txt_ho.Text.Trim().All(c => !char.IsLetterOrDigit(c)))
             {
                 e.Cancel = true;
                 txt_ho.Focus();
@@ -170,14 +173,13 @@ namespace Project
 
         private void txt_ten_Validating(object sender, CancelEventArgs e)
         {
-            var regexItem = new Regex("^[a-zA-Z]*$");
             if (string.IsNullOrWhiteSpace(txt_ten.Text))
             {
                 e.Cancel = true;
                 txt_ten.Focus();
                 errorProvider1.SetError(txt_ten, "Tên không được để trống!");
             }
-            else if (!regexItem.IsMatch(txt_ho.Text.Trim()))
+            else if (txt_ho.Text.Trim().All(c => !char.IsLetterOrDigit(c)))
             {
                 e.Cancel = true;
                 txt_ten.Focus();
@@ -256,6 +258,47 @@ namespace Project
             {
                 e.Cancel = false;
                 errorProvider1.SetError(txt_luong, "");
+            }
+            
+        }
+
+        private void button_Thoat_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            panel2.Width += 112;
+            if(panel2.Width >= 1115)
+            {
+                timer1.Stop();
+                panel2.Width = 1;
+            }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void txt_luong_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txt_luong_Leave(object sender, EventArgs e)
+        {
+
+            //txt_luong.Text = string.Format("{0:#,##0.00}", double.Parse(txt_luong.Text));
+            if (Double.Parse(txt_luong.Text.Trim()) <= 1000000)
+            {
+                txt_luong.Focus();
+                errorProvider1.SetError(txt_luong, "Lương không được thấp hơn 1.000.000!");
+            }
+            else
+            {
+                txt_luong.Text = string.Format("{0:#,##0.00}", double.Parse(txt_luong.Text));
             }
         }
     }

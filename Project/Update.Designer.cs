@@ -60,6 +60,9 @@ namespace Project
             this.txt_luong = new System.Windows.Forms.TextBox();
             this.dte_ngaysinh = new System.Windows.Forms.DateTimePicker();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             manvLabel = new System.Windows.Forms.Label();
             hoLabel = new System.Windows.Forms.Label();
             phaiLabel = new System.Windows.Forms.Label();
@@ -188,6 +191,7 @@ namespace Project
             this.dataGridViewTextBoxColumn2.HeaderText = "ho";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
             this.dataGridViewTextBoxColumn2.Width = 125;
             // 
             // dataGridViewTextBoxColumn3
@@ -196,6 +200,7 @@ namespace Project
             this.dataGridViewTextBoxColumn3.HeaderText = "ten";
             this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
             this.dataGridViewTextBoxColumn3.Width = 125;
             // 
             // dataGridViewTextBoxColumn4
@@ -204,6 +209,7 @@ namespace Project
             this.dataGridViewTextBoxColumn4.HeaderText = "phai";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
             this.dataGridViewTextBoxColumn4.Width = 125;
             // 
             // dataGridViewTextBoxColumn5
@@ -212,6 +218,7 @@ namespace Project
             this.dataGridViewTextBoxColumn5.HeaderText = "diachi";
             this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             this.dataGridViewTextBoxColumn5.Width = 125;
             // 
             // dataGridViewTextBoxColumn6
@@ -220,6 +227,7 @@ namespace Project
             this.dataGridViewTextBoxColumn6.HeaderText = "ngaysinh";
             this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
             this.dataGridViewTextBoxColumn6.Width = 125;
             // 
             // dataGridViewTextBoxColumn7
@@ -228,6 +236,7 @@ namespace Project
             this.dataGridViewTextBoxColumn7.HeaderText = "luong";
             this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
             this.dataGridViewTextBoxColumn7.Width = 125;
             // 
             // button_Them
@@ -268,6 +277,7 @@ namespace Project
             this.button_Thoat.TabIndex = 5;
             this.button_Thoat.Text = "Thoát";
             this.button_Thoat.UseVisualStyleBackColor = true;
+            this.button_Thoat.Click += new System.EventHandler(this.button_Thoat_Click);
             // 
             // txt_manv
             // 
@@ -328,7 +338,9 @@ namespace Project
             this.txt_luong.Name = "txt_luong";
             this.txt_luong.Size = new System.Drawing.Size(309, 27);
             this.txt_luong.TabIndex = 18;
+            this.txt_luong.TextChanged += new System.EventHandler(this.txt_luong_TextChanged);
             this.txt_luong.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_luong_KeyPress);
+            this.txt_luong.Leave += new System.EventHandler(this.txt_luong_Leave);
             this.txt_luong.Validating += new System.ComponentModel.CancelEventHandler(this.txt_luong_Validating);
             // 
             // dte_ngaysinh
@@ -346,11 +358,35 @@ namespace Project
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 502);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1115, 8);
+            this.panel1.TabIndex = 20;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.panel2.Location = new System.Drawing.Point(0, 500);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1, 5);
+            this.panel2.TabIndex = 21;
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Update
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1115, 510);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(ngaysinhLabel);
             this.Controls.Add(this.dte_ngaysinh);
             this.Controls.Add(luongLabel);
@@ -382,12 +418,7 @@ namespace Project
         }
 
         #endregion
-
-        private ChuyenDeCNPMDataSet chuyenDeCNPMDataSet;
-        private System.Windows.Forms.BindingSource nhanVienBindingSource;
-        private ChuyenDeCNPMDataSetTableAdapters.NhanVienTableAdapter nhanVienTableAdapter;
         private ChuyenDeCNPMDataSetTableAdapters.TableAdapterManager tableAdapterManager;
-        private System.Windows.Forms.DataGridView nhanVienDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
@@ -407,5 +438,12 @@ namespace Project
         private System.Windows.Forms.TextBox txt_luong;
         private System.Windows.Forms.DateTimePicker dte_ngaysinh;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Timer timer1;
+        public System.Windows.Forms.DataGridView nhanVienDataGridView;
+        public ChuyenDeCNPMDataSet chuyenDeCNPMDataSet;
+        public System.Windows.Forms.BindingSource nhanVienBindingSource;
+        public ChuyenDeCNPMDataSetTableAdapters.NhanVienTableAdapter nhanVienTableAdapter;
     }
 }
